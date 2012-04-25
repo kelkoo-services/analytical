@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/analytical/modules/google_optimizer.rb",
     "lib/analytical/modules/hubspot.rb",
     "lib/analytical/modules/kiss_metrics.rb",
+    "lib/analytical/modules/go_squared.rb",
     "lib/analytical/modules/loopfuse.rb",
     "lib/analytical/modules/microsoft_ads.rb",
     "lib/analytical/modules/mixpanel.rb",
