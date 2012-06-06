@@ -12,14 +12,18 @@ module Analytical
         init_location(location) do
           js = <<-HTML
           <!-- Analytical Init: Mixpanel -->
-          <script type="text/javascript" src="https://api.mixpanel.com/site_media/js/api/mixpanel.js"></script>
           <script type="text/javascript">
-              try {
-                  var mpmetrics = new MixpanelLib('#{options[:key]}');
-              } catch(err) {
-                  null_fn = function () {};
-                  var mpmetrics = { track: null_fn, track_funnel: null_fn, register: null_fn, register_once: null_fn };
-              }
+              (function(d,c){var a,b,g,e;a=d.createElement("script");a.type="text/javascript";
+              a.async=!0;a.src=("https:"===d.location.protocol?"https:":"http:")+
+              '//api.mixpanel.com/site_media/js/api/mixpanel.2.js';b=d.getElementsByTagName("script")[0];
+              b.parentNode.insertBefore(a,b);c._i=[];c.init=function(a,d,f){var b=c;
+              "undefined"!==typeof f?b=c[f]=[]:f="mixpanel";g=['disable','track','track_pageview',
+              'track_links','track_forms','register','register_once','unregister','identify',
+              'name_tag','set_config'];
+              for(e=0;e<g.length;e++)(function(a){b[a]=function(){b.push([a].concat(
+              Array.prototype.slice.call(arguments,0)))}})(g[e]);c._i.push([a,d,f])};window.mixpanel=c}
+              )(document,[]);
+              mixpanel.init("#{options[:key]}");
           </script>
           HTML
           js
@@ -28,23 +32,23 @@ module Analytical
 
       def track(event, properties = {})
         callback = properties.delete(:callback) || "function(){}"
-        %(mpmetrics.track("#{event}", #{properties.to_json}, #{callback});)
+        %(mixpanel.track("#{event}", #{properties.to_json}, #{callback});)
       end
 
       # Used to set "Super Properties" - http://mixpanel.com/api/docs/guides/super-properties
       def set(properties)
-        "mpmetrics.register(#{properties.to_json});"
+        "mixpanel.register(#{properties.to_json});"
       end
 
       def identify(id, *args)
         opts = args.first || {}
         name = opts.is_a?(Hash) ? opts[:name] : ""
-        name_str = name.blank? ? "" : " mpmetrics.name_tag('#{name}');"
-        %(mpmetrics.identify('#{id}');#{name_str})
+        name_str = name.blank? ? "" : " mixpanel.name_tag('#{name}');"
+        %(mixpanel.identify('#{id}');#{name_str})
       end
 
       def event(name, attributes = {})
-        %(mpmetrics.track("#{name}", #{attributes.to_json});)
+        %(mixpanel.track("#{name}", #{attributes.to_json});)
       end
 
     end
