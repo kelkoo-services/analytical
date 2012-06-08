@@ -41,10 +41,7 @@ module Analytical
       end
 
       def identify(id, *args)
-        opts = args.first || {}
-        name = opts.is_a?(Hash) ? opts[:name] : ""
-        name_str = name.blank? ? "" : " mixpanel.name_tag('#{name}');"
-        %(mixpanel.identify('#{id}');#{name_str})
+        %(mixpanel.name_tag('#{id}');)
       end
 
       def event(name, attributes = {})
