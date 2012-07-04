@@ -40,6 +40,11 @@ mixpanel.init("#{options[:key]}");
         %(mixpanel.track("#{name}", #{attributes.to_json});)
       end
 
+      def people(email, attributes = {})
+        values = {"$email" => email}.merge(attributes).to_json
+        %(mixpanel.people.set(#{values});)
+      end
+
     end
   end
 end

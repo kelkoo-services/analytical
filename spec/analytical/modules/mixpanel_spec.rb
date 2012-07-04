@@ -40,6 +40,15 @@ describe "Analytical::Modules::Mixpanel" do
       @api.event('An event happened', { :item => 43 }).should == "mixpanel.track(\"An event happened\", {\"item\":43});"
     end
   end
+  describe '#people' do
+    let(:email) {'monkey@juice.com'}
+    let(:attributes) {{:item => 43}}
+    it 'should return a person tracking string' do
+      result = {"$email" => email}.merge(attributes).to_json
+      @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
+      @api.people(email, attributes).should == "mixpanel.people.set(#{result});"
+    end
+  end
   describe '#init_javascript' do
     let(:options) {{:key => ""}}
     it 'should return the init javascript' do
