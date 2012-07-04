@@ -46,7 +46,7 @@ describe "Analytical::Modules::Mixpanel" do
     it 'should return a person tracking string' do
       result = {"$email" => email}.merge(attributes).to_json
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.people(email, attributes).should == "mixpanel.people.set(#{result});"
+      @api.people(email, attributes).should == "mixpanel.identify(#{email}); mixpanel.people.set(#{result});"
     end
   end
   describe '#init_javascript' do

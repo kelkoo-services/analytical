@@ -42,7 +42,7 @@ mixpanel.init("#{options[:key]}");
 
       def people(email, attributes = {})
         values = {"$email" => email}.merge(attributes).to_json
-        %(mixpanel.people.set(#{values});)
+        %(mixpanel.identify(#{email}); mixpanel.people.set(#{values});)
       end
 
     end
