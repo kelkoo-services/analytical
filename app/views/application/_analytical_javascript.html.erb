@@ -9,6 +9,9 @@ var Analytical = {
   },
   set: function(data) {
 <%= raw analytical.now.set('__DATA__').gsub(/"__DATA__"/,'data') %>
+  },
+  identify: function(email, id) {
+<%= raw analytical.now.identify('__EMAIL__', '__ID__').gsub(/"__ID__"/,'id').gsub(/"__EMAIL__"/,'email') %>
   }
 };
 </script>

@@ -17,12 +17,12 @@ describe "Analytical::Modules::Mixpanel" do
   describe '#identify' do
     it 'should return a js string' do
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.identify('email', 'some guid').should == "mixpanel.name_tag('email');mixpanel.people.set({'$email': 'email');mixpanel.identify('some guid');"
+      @api.identify('email', 'some guid').should == "mixpanel.name_tag(\"email\");mixpanel.people.set({'$email': \"email\"});mixpanel.identify(\"some guid\");"
     end
 
     it 'should return a js string with name if included' do
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.identify('email', 'some guid').should == "mixpanel.name_tag('email');mixpanel.people.set({'$email': 'email');mixpanel.identify('some guid');"
+      @api.identify('email', 'some guid').should == "mixpanel.name_tag(\"email\");mixpanel.people.set({'$email': \"email\"});mixpanel.identify(\"some guid\");"
     end
   end
   describe '#track' do

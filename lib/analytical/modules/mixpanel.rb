@@ -32,8 +32,8 @@ mixpanel.init("#{options[:key]}");
         "mixpanel.register(#{properties.to_json});"
       end
 
-      def identify(email, *args)
-        %(mixpanel.name_tag('#{email}');mixpanel.people.set({'$email': '#{email}');mixpanel.identify('#{args.first}');)
+      def identify(email, id)
+        %(mixpanel.name_tag("#{email}");mixpanel.people.set({'$email': "#{email}"});mixpanel.identify("#{id}");)
       end
 
       def event(name, attributes = {})
