@@ -32,19 +32,13 @@ mixpanel.init("#{options[:key]}");
         "mixpanel.register(#{properties.to_json});"
       end
 
-      def identify(id, *args)
-        %(mixpanel.name_tag('#{id}');)
+      def identify(email, *args)
+        %(mixpanel.name_tag('#{email}');mixpanel.people.set({'$email': '#{email}');)
       end
 
       def event(name, attributes = {})
         %(mixpanel.track("#{name}", #{attributes.to_json});)
       end
-
-      def people(email, attributes = {})
-        values = {"$email" => email}.merge(attributes).to_json
-        %(mixpanel.identify(#{email}); mixpanel.people.set(#{values});)
-      end
-
     end
   end
 end
