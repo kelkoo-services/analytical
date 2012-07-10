@@ -17,11 +17,12 @@ describe "Analytical::Modules::Mixpanel" do
   describe '#identify' do
     it 'should return a js string' do
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.identify('id', {:email=>'test@test.com'}).should == "mixpanel.name_tag('id');"
+      @api.identify('email', 'some guid').should == "mixpanel.name_tag('email');mixpanel.people.set({'$email': 'email');mixpanel.identify('some guid');"
     end
+
     it 'should return a js string with name if included' do
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.identify('id', {:email=>'test@test.com', :name => "user_name"}).should == "mixpanel.name_tag('id');"
+      @api.identify('email', 'some guid').should == "mixpanel.name_tag('email');mixpanel.people.set({'$email': 'email');mixpanel.identify('some guid');"
     end
   end
   describe '#track' do
@@ -38,15 +39,6 @@ describe "Analytical::Modules::Mixpanel" do
     it 'should return a js string' do
       @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
       @api.event('An event happened', { :item => 43 }).should == "mixpanel.track(\"An event happened\", {\"item\":43});"
-    end
-  end
-  describe '#people' do
-    let(:email) {'monkey@juice.com'}
-    let(:attributes) {{:item => 43}}
-    it 'should return a person tracking string' do
-      result = {"$email" => email}.merge(attributes).to_json
-      @api = Analytical::Modules::Mixpanel.new :parent=>@parent, :js_url_key=>'abcdef'
-      @api.people(email, attributes).should == "mixpanel.identify(#{email}); mixpanel.people.set(#{result});"
     end
   end
   describe '#init_javascript' do
